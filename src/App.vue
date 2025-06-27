@@ -1,26 +1,30 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="bg-dark text-white min-vh-100 d-flex flex-column">
+    <!-- Header -->
+    <SiteHeader />
+    <router-view/>
+    <!-- Nội dung chính -->
+    <!-- Footer -->
+    <SiteFooter />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SiteHeader from './components/SiteHeader.vue'
+import SiteFooter from './components/SiteFooter.vue'
 
 export default {
-  name: 'App',
+  name: 'HomePage',
   components: {
-    HelloWorld
+    SiteHeader,
+    SiteFooter
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+.card {
+  background-color: #f8f9fa;
+  color: #212529;
 }
 </style>
