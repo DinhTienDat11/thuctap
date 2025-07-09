@@ -1,65 +1,41 @@
 <template>
-  <div class="min-vh-100 d-flex flex-column justify-content-between bg-gradient bg-dark text-white">
-    <SiteHeader />
-
-    <main class="flex-grow-1 d-flex justify-content-center align-items-center">
-      <div class="bg-white rounded shadow p-4 w-100" style="max-width: 400px;">
-        <h2 class="text-center text-dark mb-4">Đăng ký</h2>
-        <form @submit.prevent="handleRegister">
-          <div class="mb-3">
-            <label class="form-label" >Tên đăng nhập</label>
-            <input v-model="username" type="text" class="form-control" placeholder="Nhập tên đăng nhập" required />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Mật khẩu</label>
-            <input v-model="password" type="password" class="form-control" placeholder="Nhập mật khẩu" required />
-          </div>
-
-          <div v-if="errors.length" class="text-danger small mb-3">
-            <ul class="mb-0 ps-3">
-              <li v-for="(err, i) in errors" :key="i">{{ err }}</li>
-            </ul>
-          </div>
-
-          <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
-
-                  <div class="text-center text-muted small mt-3">
-          Bạn đã có tài khoản? <a href="#" class="text-decoration-none">Đăng nhập</a><br />
-                  </div>
-        </form>
+  <div class="container py-5 text-dark">
+    <h2 class="text-center">\u0110\u0103ng k\u00fd</h2>
+    <form @submit.prevent="handleRegister" class="w-100 mx-auto" style="max-width: 400px">
+      <div class="mb-3">
+        <label class="form-label">T\u00ean \u0111\u0103ng nh\u1eadp</label>
+        <input v-model="username" type="text" class="form-control" required />
       </div>
-    </main>
-
-    <SiteFooter />
+      <div class="mb-3">
+        <label class="form-label">M\u1eadt kh\u1ea9u</label>
+        <input v-model="password" type="password" class="form-control" required />
+      </div>
+      <button type="submit" class="btn btn-primary w-100">\u0110\u0103ng k\u00fd</button>
+    </form>
   </div>
 </template>
 
 <script setup>
-import SiteHeader from './SiteHeader.vue'
-import SiteFooter from './SiteFooter.vue'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const username = ref('')
-const password = ref('')
+const password = ref('' )
+const router = useRouter()
 
-const errors = computed(() => {
-  const e = []
-  if (password.value.length < 3) e.push('Tối thiểu 3 ký tự.')
-  if (!/[a-z]/.test(password.value)) e.push('Phải có chữ cái thường.')
-  if (!/[A-Z]/.test(password.value)) e.push('Phải có chữ cái viết hoa.')
-  if (!/[0-9]/.test(password.value)) e.push('Phải có số.')
-  return e
-})
-
-const handleRegister = () => {
-  if (errors.value.length > 0) return
+function handleRegister() {
   const user = {
     username: username.value,
     password: password.value,
+    email: username.value + '@example.com',
+    avatar: 'https://i.pravatar.cc/150?u=' + username.value,
+    skills: []
   }
-  localStorage.setItem('user', JSON.stringify(user))
-  alert('Đăng ký thành công! Hãy chuyển sang đăng nhập.')
-  username.value = ''
-  password.value = ''
+  const users = JSON.parse(localStorage.getItem('users')) || []
+  users.push(user)
+  localStorage.setItem('users', JSON.stringify(users))
+  localStorage.setItem('currentUser', JSON.stringify(user))
+  alert('Đăng kí thành công!')
+  router.push('/user')
 }
 </script>
